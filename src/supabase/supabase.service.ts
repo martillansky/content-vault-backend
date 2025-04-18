@@ -4,8 +4,8 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 interface UserSecret {
   wallet_address: string;
   password: string;
-  response_password: string;
   salt: string;
+  response_salt: string;
 }
 
 @Injectable()
@@ -15,7 +15,7 @@ export class SupabaseService implements OnModuleInit {
   onModuleInit() {
     this.client = createClient(
       process.env.SUPABASE_URL || '',
-      process.env.SUPABASE_ANON_KEY || '',
+      process.env.SUPABASE_SERVICE_ROLE_KEY || '',
     );
   }
 
@@ -34,10 +34,10 @@ export class SupabaseService implements OnModuleInit {
     return response.data;
   }
 
-  async updateUserSecrets(walletAddress: string, response_password: string) {
+  async updateUserSecrets(walletAddress: string, response_salt: string) {
     const { data, error } = await this.client
       .from('user_secrets')
-      .update({ response_password })
+      .update({ response_salt })
       .eq('wallet_address', walletAddress);
 
     if (error) throw error;

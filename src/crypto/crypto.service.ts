@@ -26,15 +26,12 @@ export class CryptoService {
       throw new BadRequestException('Invalid hashed derived key');
     }
 
-    const response_password = this.generateSecurePassword();
-    await this.supabaseService.updateUserSecrets(
-      walletAddress,
-      response_password,
-    );
+    const response_salt = this.generateSalt();
+    await this.supabaseService.updateUserSecrets(walletAddress, response_salt);
 
     const responseHashedDerivedKey: string = await this.deriveHashKey(
-      response_password,
-      user.salt,
+      user.password,
+      response_salt,
     );
 
     return responseHashedDerivedKey;
@@ -150,11 +147,10 @@ export class CryptoService {
       .join('');
   }
 
-  generateSecurePassword(): string {
-    // 32 random bytes (256 bits) for high-entropy password
-    const array = crypto.getRandomValues(new Uint8Array(32));
-    return Array.from(array)
+  generateSalt(): string {
+    const saltBytes = crypto.getRandomValues(new Uint8Array(16)); // 128-bit salt
+    return Array.from(saltBytes)
       .map((b) => b.toString(16).padStart(2, '0'))
-      .join(''); // 64-character hex string
+      .join(''); // 32-character hex string
   }
 }
