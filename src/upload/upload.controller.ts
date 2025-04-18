@@ -31,9 +31,9 @@ export class UploadController {
     const useEncryption = body.useEncryption === 'true';
 
     return this.uploadService.uploadToPinata(
-      file,
       body.walletAddress,
       body.hashedDerivedKey,
+      file,
       useEncryption,
     );
   }

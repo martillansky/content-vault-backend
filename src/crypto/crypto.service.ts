@@ -29,9 +29,7 @@ export class CryptoService {
     const response_password = this.generateSecurePassword();
     await this.supabaseService.updateUserSecrets(
       walletAddress,
-      user.password,
       response_password,
-      user.salt,
     );
 
     const responseHashedDerivedKey: string = await this.deriveHashKey(

@@ -34,15 +34,10 @@ export class SupabaseService implements OnModuleInit {
     return response.data;
   }
 
-  async updateUserSecrets(
-    walletAddress: string,
-    password: string,
-    response_password: string,
-    salt: string,
-  ) {
+  async updateUserSecrets(walletAddress: string, response_password: string) {
     const { data, error } = await this.client
       .from('user_secrets')
-      .update({ password, response_password, salt })
+      .update({ response_password })
       .eq('wallet_address', walletAddress);
 
     if (error) throw error;

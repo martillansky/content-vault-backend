@@ -62,9 +62,9 @@ export class UploadService {
   constructor(private readonly cryptoService: CryptoService) {}
 
   async uploadToPinata(
-    file: unknown,
     walletAddress: string,
     hashedDerivedKey: string,
+    file: unknown,
     useEncryption: boolean,
   ): Promise<UploadResponse> {
     const responseHashedDerivedKey: string =
