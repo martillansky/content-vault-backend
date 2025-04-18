@@ -67,7 +67,7 @@ export class UploadService {
     file: unknown,
     useEncryption: boolean,
   ): Promise<UploadResponse> {
-    const responseHashedDerivedKey: string =
+    const { password, responseHashedDerivedKey } =
       await this.cryptoService.validateHash(hashedDerivedKey, walletAddress);
 
     if (!responseHashedDerivedKey) {
@@ -79,7 +79,7 @@ export class UploadService {
     const IpfsHash = await this.cryptoService.encodeCID(
       cid,
       useEncryption,
-      walletAddress,
+      password,
     );
 
     const timestamp = new Date().toISOString();

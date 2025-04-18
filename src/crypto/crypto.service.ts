@@ -14,7 +14,7 @@ export class CryptoService {
   async validateHash(
     hashedDerivedKey: string,
     walletAddress: string,
-  ): Promise<string> {
+  ): Promise<{ password: string; responseHashedDerivedKey: string }> {
     const user = await this.supabaseService.getUserSecrets(walletAddress);
 
     const newDerivedKey: string = await this.deriveHashKey(
@@ -34,7 +34,7 @@ export class CryptoService {
       response_salt,
     );
 
-    return responseHashedDerivedKey;
+    return { password: user.password, responseHashedDerivedKey };
   }
 
   async encryptCIDToHex(cidStr: string, password: string): Promise<string> {
@@ -115,10 +115,10 @@ export class CryptoService {
   async encodeCID(
     cid: string,
     useEncryption: boolean,
-    walletAddress: string,
+    password: string,
   ): Promise<string> {
     return useEncryption
-      ? await this.encryptCIDToHex(cid, walletAddress)
+      ? await this.encryptCIDToHex(cid, password)
       : this.simpleCIDToHex(cid);
   }
 
