@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CID } from 'multiformats/cid';
+import { CID } from 'multiformats';
 import { SupabaseService } from 'src/supabase/supabase.service';
 
 // Define a type for the CID module
